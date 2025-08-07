@@ -1,0 +1,13 @@
+[run]
+omit =
+  */__init__.py
+  tests/*
+
+[report]
+show_missing = true
+exclude_lines =
+  prama: no cover
+  def __repr__
+  raise NotImplentedError
+  if __name__ == .__main__.:
+  pass

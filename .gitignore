@@ -1,0 +1,21 @@
+.env
+.env.local
+
+# cache
+__pycache__/
+
+.DS_Store
+
+# build
+dist/
+build/
+
+# virtual environment
+.venv
+venv
+
+# test caches
+.pytest_cache/
+.ruff_cache/
+
+.coverage/
