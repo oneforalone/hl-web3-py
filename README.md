@@ -241,10 +241,6 @@ The project uses:
 
 MIT License
 
-## Contributing
-
-[Add contributing guidelines here]
-
 ## Support
 
 For issues and questions:
