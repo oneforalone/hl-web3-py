@@ -30,9 +30,13 @@ def test_abi_encode_with_selector():
         pytest.param(0, bytes(), id="action_id=0", marks=pytest.mark.xfail),
         pytest.param(12, bytes(), id="action_id=12", marks=pytest.mark.xfail),
         pytest.param(-1, bytes(), id="action_id=-1", marks=pytest.mark.xfail),
-        pytest.param("abc", bytes(), id="action_id=abc", marks=pytest.mark.xfail),
+        pytest.param(
+            "abc", bytes(), id="action_id=abc", marks=pytest.mark.xfail
+        ),
         pytest.param(1.0, bytes(), id="action_id=1.0", marks=pytest.mark.xfail),
-        pytest.param(True, bytes(), id="action_id=True", marks=pytest.mark.xfail),
+        pytest.param(
+            True, bytes(), id="action_id=True", marks=pytest.mark.xfail
+        ),
         pytest.param(1, "", id="action=''", marks=pytest.mark.xfail),
     ],
 )

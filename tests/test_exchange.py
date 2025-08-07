@@ -41,7 +41,9 @@ async def test_vault_transfer(exchange: Exchange):
 @pytest.mark.skip(reason="In-sufficient HYPE to delegate")
 async def test_token_delegate(exchange: Exchange):
     amount = Web3.to_wei(1, "ether")  # 1 HYPE
-    tx = await exchange.token_delegate(hypurr_validator, amount, is_undelegate=True)
+    tx = await exchange.token_delegate(
+        hypurr_validator, amount, is_undelegate=True
+    )
     print(tx, end=" ")
 
 

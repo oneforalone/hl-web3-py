@@ -1,14 +1,14 @@
 from logging import getLogger
 
+from web3 import Web3
 from eth_abi import abi
 from eth_account import Account
-from web3 import Web3
 
+from hl_web3.utils.miscs import load_abi, get_raw_action
 from hl_web3.utils.constants import HL_CORE_WRITER
-from hl_web3.utils.miscs import get_raw_action, load_abi
 
 from .endpoint import Endpoint
-from .utils.types import ActionType, FinalizeEvmContractVariant, Tif
+from .utils.types import Tif, ActionType, FinalizeEvmContractVariant
 
 
 class Exchange(Endpoint):
@@ -27,19 +27,27 @@ class Exchange(Endpoint):
         self.logger.debug(f"Sending raw action: {raw_action.hex()}")
 
         data = self.core_writer.encode_abi("sendRawAction", args=[raw_action])
-        basic_tx = {"to": HL_CORE_WRITER, "data": data, "from": self.account.address}
+        basic_tx = {
+            "to": HL_CORE_WRITER,
+            "data": data,
+            "from": self.account.address,
+        }
         tx = {
             **basic_tx,
             "gas": await self._w3.eth.estimate_gas(basic_tx),  # type: ignore
             "gasPrice": await self._w3.eth.gas_price,
-            "nonce": await self._w3.eth.get_transaction_count(self.account.address),
+            "nonce": await self._w3.eth.get_transaction_count(
+                self.account.address
+            ),
             "chainId": await self._w3.eth.chain_id,
         }
         signed_tx = self._w3.eth.account.sign_transaction(tx, self.account.key)
 
         self.logger.debug(f"Sending tx: {signed_tx.raw_transaction.hex()}")
 
-        tx_hash = await self._w3.eth.send_raw_transaction(signed_tx.raw_transaction)
+        tx_hash = await self._w3.eth.send_raw_transaction(
+            signed_tx.raw_transaction
+        )
         return tx_hash.hex()
 
     # action 1
@@ -61,21 +69,15 @@ class Exchange(Endpoint):
         return await self._send_raw_action(ActionType.LimitOrder, action)
 
     # action 2
-    async def vault_transfer(
-        self,
-        vault: str,
-        is_deposit: bool,
-        usd: int,
-    ):
-        action = abi.encode(["address", "bool", "uint64"], [vault, is_deposit, usd])
+    async def vault_transfer(self, vault: str, is_deposit: bool, usd: int):
+        action = abi.encode(
+            ["address", "bool", "uint64"], [vault, is_deposit, usd]
+        )
         return await self._send_raw_action(ActionType.VaultTransfer, action)
 
     # action 3
     async def token_delegate(
-        self,
-        validator: str,
-        amount: int,
-        is_undelegate: bool,
+        self, validator: str, amount: int, is_undelegate: bool
     ):
         action = abi.encode(
             ["address", "uint64", "bool"], [validator, amount, is_undelegate]
@@ -94,7 +96,9 @@ class Exchange(Endpoint):
 
     # action 6
     async def spot_send(self, dest: str, token: int, amount: int):
-        action = abi.encode(["address", "uint64", "uint64"], [dest, token, amount])
+        action = abi.encode(
+            ["address", "uint64", "uint64"], [dest, token, amount]
+        )
         return await self._send_raw_action(ActionType.SpotSend, action)
 
     # action 7
@@ -118,7 +122,9 @@ class Exchange(Endpoint):
         action = abi.encode(
             ["uint64", "uint8", "uint64"], [token, variant.value, create_nonce]
         )
-        return await self._send_raw_action(ActionType.FinalizeEVMContract, action)
+        return await self._send_raw_action(
+            ActionType.FinalizeEVMContract, action
+        )
 
     # action 9
     # If the API wallet name is empty then this becomes the main API wallet / agent
@@ -134,4 +140,6 @@ class Exchange(Endpoint):
     # action 11
     async def cancel_order_by_cloid(self, asset: int, cloid: int):
         action = abi.encode(["uint32", "uint128"], [asset, cloid])
-        return await self._send_raw_action(ActionType.CancelOrderByCloid, action)
+        return await self._send_raw_action(
+            ActionType.CancelOrderByCloid, action
+        )
