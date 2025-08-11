@@ -4,33 +4,33 @@ from eth_abi import abi
 
 import hl_web3.utils.constants as constants
 from hl_web3.utils.types import (
-    AccountMarginSummary,
-    AssetType,
     Bbo,
-    Delegation,
-    DelegatorSummary,
-    PerpAssetInfo,
     Position,
-    SpotBalance,
     SpotInfo,
+    AssetType,
     TokenInfo,
+    Delegation,
+    SpotBalance,
     TokenSupply,
+    PerpAssetInfo,
     UserVaultEquity,
+    DelegatorSummary,
+    AccountMarginSummary,
 )
 
 from .endpoint import Endpoint
 from .utils.abi_types import (
-    AccountMarginSummaryABI,
     BboABI,
-    DelegationsABI,
-    DelegatorSummaryABI,
-    PerpAssetInfoABI,
     PositionABI,
-    SpotBalanceABI,
     SpotInfoABI,
     TokenInfoABI,
+    DelegationsABI,
+    SpotBalanceABI,
     TokenSupplyABI,
+    PerpAssetInfoABI,
     UserVaultEquityABI,
+    DelegatorSummaryABI,
+    AccountMarginSummaryABI,
 )
 
 
@@ -176,9 +176,9 @@ class Info(Endpoint):
             exponent = 6 - perp_asset.sz_decimals
         elif asset_type == AssetType.SPOT:
             spot_info = await self.get_spot_info(asset)
-            (_, base_token) = spot_info.tokens
-            base_token_info = await self.get_token_info(base_token)
-            exponent = 8 - base_token_info.sz_decimals
+            token_id, _ = spot_info.tokens
+            token_info = await self.get_token_info(token_id)
+            exponent = 8 - token_info.sz_decimals
         else:  # pragma: no cover
             raise ValueError(f"Invalid asset type: {asset_type}")
 

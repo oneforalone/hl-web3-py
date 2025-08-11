@@ -4,8 +4,8 @@ from typing import AsyncGenerator
 import dotenv
 import pytest
 
-from hl_web3.exchange import Exchange
 from hl_web3.info import Info
+from hl_web3.exchange import Exchange
 from hl_web3.utils.constants import HL_RPC_URL, HL_TESTNET_RPC_URL  # noqa: F401
 
 dotenv.load_dotenv()
