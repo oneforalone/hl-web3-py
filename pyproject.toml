@@ -1,6 +1,6 @@
 [project]
 name = "hl_web3"
-version = "0.1.0"
+version = "0.1.1"
 description = "Web3 client for Hyperliquid"
 license = {file = "LICENSE"}
 authors = [{name = "Yuki", email = "oneforalone@gmail.com"}]
@@ -21,6 +21,14 @@ dev = [
     "pytest-ruff>=0.5",
     "python-dotenv>=1.1.1",
 ]
+
+[project.urls]
+Homepage = "https://github.com/oneforalone/hl-web3-py"
+Documentation = "https://github.com/oneforalone/hl-web3-py"
+Repository = "https://github.com/oneforalone/hl-web3-py"
+Issues = "https://github.com/oneforalone/hl-web3-py/issues"
+Changelog = "https://github.com/oneforalone/hl-web3-py/blob/master/CHANGELOG.md"
+
 
 [build-system]
 requires = ["uv_build>=0.7.11,<0.8.0"]
